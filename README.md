@@ -25,7 +25,7 @@ Monorepo listo para trabajar en equipo con **backend en NestJS** y **frontend en
 
 ## Stack
 
-- **Node**: 20.11.0 (`.nvmrc`)
+- **Node**: 22.14.0 (`.nvmrc`)
 - **Package manager**: `pnpm@9.x` (forzado con `only-allow` y `packageManager` en `package.json`)
 - **Frontend**: React + Vite + TypeScript
 - **Backend**: NestJS
@@ -69,7 +69,7 @@ the-winner-app/
 
 ## Requisitos
 
-- **Node 20.11.0** (`nvm use` toma la versión de `.nvmrc`)
+- **Node 22.14.0** (`nvm use` toma la versión de `.nvmrc`)
 - **Corepack habilitado**: `corepack enable`
 - **pnpm 9.x** (Corepack lo gestiona automáticamente)
 
@@ -201,7 +201,7 @@ chore(ci): actualizar Node a 20.11
 ## CI/CD
 
 **CI en PR y main**: `.github/workflows/ci.yml`
-- Setup Node 20.11.0 + pnpm 9.x
+- Setup Node 22.14.0 + pnpm 9.x
 - `pnpm lint`
 - `pnpm test`
 - `pnpm build`
