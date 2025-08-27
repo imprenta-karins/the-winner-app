@@ -1,0 +1,26 @@
+{
+  "name": "the-winner-app",
+  "private": true,
+  "packageManager": "pnpm@9.6.0",
+  "engines": {
+    "node": ">=20.11.0",
+    "pnpm": ">=9 <10"
+  },
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "dev": "pnpm -r --parallel run dev",
+    "build": "pnpm -r run build",
+    "lint": "pnpm -r run lint",
+    "test": "pnpm -r run test",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
