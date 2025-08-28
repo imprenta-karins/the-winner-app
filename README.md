@@ -52,7 +52,7 @@ the-winner-app/
 │  │  ├─ .env.template
 │  │  └─ package.json
 │  └─ frontend/               # React + Vite + TS
-│     ├─ src/ (main.tsx, App.tsx)
+│     ├─ src/ (main.tsx, App.tsx, config.ts)
 │     ├─ index.html
 │     ├─ vite.config.ts
 │     ├─ tsconfig.json
