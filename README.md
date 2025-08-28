@@ -15,6 +15,11 @@ Monorepo listo para trabajar en equipo con **backend en NestJS** y **frontend en
   - [Primeros pasos](#primeros-pasos)
   - [Scripts útiles](#scripts-útiles)
   - [Variables de entorno](#variables-de-entorno)
+  - [Backend (`apps/backend/.env`)](#backend-appsbackendenv)
+  - [Frontend (`apps/frontend/.env`)](#frontend-appsfrontendenv)
+  - [Uso en el frontend](#uso-en-el-frontend)
+  - [Plantillas](#plantillas)
+  - [`apps/frontend/.env.template` → `apps/frontend/.env` antes de correr los servicios.](#appsfrontendenvtemplate--appsfrontendenv-antes-de-correr-los-servicios)
   - [Flujo de trabajo en equipo](#flujo-de-trabajo-en-equipo)
   - [Convención de commits](#convención-de-commits)
   - [CI/CD](#cicd)
@@ -44,12 +49,14 @@ the-winner-app/
 │  │  ├─ src/ (main.ts, app.*)
 │  │  ├─ nest-cli.json
 │  │  ├─ tsconfig.json
+│  │  ├─ .env.template
 │  │  └─ package.json
 │  └─ frontend/               # React + Vite + TS
 │     ├─ src/ (main.tsx, App.tsx)
 │     ├─ index.html
 │     ├─ vite.config.ts
 │     ├─ tsconfig.json
+│  │  ├─ .env.template
 │     └─ package.json
 ├─ packages/
 │  └─ tsconfig/
@@ -58,6 +65,7 @@ the-winner-app/
 ├─ .github/workflows/ci.yml
 ├─ .editorconfig
 ├─ .gitignore
+├─ .env.template
 ├─ .npmrc
 ├─ .nvmrc
 ├─ package.json               # workspaces + scripts monorepo
@@ -122,23 +130,55 @@ pnpm --filter @the-winner-app/backend build
 
 ## Variables de entorno
 
-Crea archivos `.env` (o `.env.local`) por app y **no** los subas al repo.
+Usamos **archivos `.env` por app** y **no** se suben al repo. Solo se versionan los `.env.template` de cada app como referencia.
 
-**Backend** (`apps/backend/.env`):
-```
+> ⚠️ No usamos `.env` en la raíz para evitar fugas al frontend y confusiones en el backend.
+
+## Backend (`apps/backend/.env`)
+```dotenv
+# Recomendado
 PORT=3000
-```
+CORS_ORIGIN=http://localhost:5173
+API_PREFIX=api
+API_VERSION=1
+NODE_ENV=development
 
-**Frontend** (`apps/frontend/.env`):
-```
-VITE_API_URL=http://localhost:3000
-```
 
-En el FE usa `import.meta.env.VITE_API_URL`. Ejemplo en `App.tsx`:
+# Opcional
+# DATABASE_URL=postgres://user:pass@localhost:5432/db
+```
+- El backend carga y valida estas variables con `@nestjs/config` al iniciar (no uses `dotenv` manualmente).
+- Las variantes `.env.local`, `.env.development`, `.env.production` también son soportadas.
+
+## Frontend (`apps/frontend/.env`)
+```dotenv
+# La API ya incluye prefijo y versión
+VITE_API_URL=http://localhost:3000/api/v1
+```
+- **Solo** variables que empiecen con `VITE_` (el resto no existe en el cliente).
+- No pongas secretos aquí: todo lo de `VITE_*` queda público en el bundle.
+
+## Uso en el frontend
+Centraliza la lectura en un módulo de config (para no repetir `import.meta.env` por toda la app):
+
 ```ts
-const API = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+// apps/frontend/src/config.ts
+export const config = {
+  apiUrl: import.meta.env.VITE_API_URL ?? 'http://localhost:3000/api/v1'
+} as const;
 ```
 
+Ejemplo en `App.tsx`:
+```ts
+import { config } from './config';
+
+const API = config.apiUrl;
+// fetch(`${API}/lo-que-sea`)
+```
+
+## Plantillas
+Copia `apps/backend/.env.template` → `apps/backend/.env` y
+`apps/frontend/.env.template` → `apps/frontend/.env` antes de correr los servicios.
 ---
 
 ## Flujo de trabajo en equipo

@@ -1,20 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
+import { config } from "./config";
 
 export default function App() {
-  const [message, setMessage] = useState('Cargando...');
+  const [message, setMessage] = useState("Cargando...");
+  const [currentUrl, setCurrentUrl] = useState("");
 
   useEffect(() => {
-    fetch('http://localhost:3000/')
+    setCurrentUrl(window.location.origin);
+    fetch(`${config.apiUrl}/`)
       .then((r) => r.text())
       .then(setMessage)
-      .catch(() => setMessage('No se pudo contactar al backend'));
+      .catch(() => setMessage("No se pudo conectar"));
   }, []);
 
   return (
-    <div style={{ fontFamily: 'system-ui, sans-serif', padding: 24 }}>
+    <div style={{ fontFamily: "system-ui, sans-serif", padding: 24 }}>
       <h1>Monorepo: React + Nest</h1>
-      <p>Backend dice: <strong>{message}</strong></p>
-      <p>Frontend en <code>http://localhost:5173</code> | Backend en <code>http://localhost:3000</code></p>
+      <p>
+        Backend dice: <strong>{message}</strong>
+      </p>
+      <p>
+        Frontend en <code>{currentUrl}</code> | Backend en{" "}
+        <code>{config.apiUrl}</code>
+      </p>
     </div>
   );
 }

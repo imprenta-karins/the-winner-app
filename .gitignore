@@ -5,6 +5,10 @@ dist
 build
 coverage
 
+# Environment
+.env
+.env.local
+
 # Logs
 npm-debug.log*
 yarn-debug.log*
