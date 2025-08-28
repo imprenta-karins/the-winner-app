@@ -56,7 +56,7 @@ the-winner-app/
 │     ├─ index.html
 │     ├─ vite.config.ts
 │     ├─ tsconfig.json
-│  │  ├─ .env.template
+│     ├─ .env.template
 │     └─ package.json
 ├─ packages/
 │  └─ tsconfig/
