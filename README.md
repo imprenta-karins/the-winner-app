@@ -90,7 +90,7 @@ the-winner-app/
 pnpm install
 
 # 2) Ejecutar ambas apps en dev (en paralelo)
-pnpm dev
+pnnm dev
 # FE: http://localhost:5173
 # BE: http://localhost:3000
 
